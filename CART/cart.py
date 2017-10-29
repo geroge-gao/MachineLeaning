@@ -269,13 +269,6 @@ def createForeCast(tree,testData,modelEval = regTreeEval):
         yHat[i,0]=treeForeCast(tree,mat(testData[i]),modelEval)
     return yHat
 
-def createForeCast(tree, testData, modelEval=regTreeEval):
-    m = len(testData)
-    yHat = mat(zeros((m, 1)))
-    for i in range(m):
-        yHat[i, 0] = treeForeCast(tree, mat(testData[i]), modelEval)
-    return yHat
-
 
 if __name__=="__main__":
     # testMat = mat(eye(4))
