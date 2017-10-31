@@ -139,11 +139,7 @@ def distSLC(vecA, vecB):  # Spherical Law of Cosines
     a = sin(vecA[0, 1] * pi / 180) * sin(vecB[0, 1] * pi / 180)
     b = cos(vecA[0, 1] * pi / 180) * cos(vecB[0, 1] * pi / 180) * \
         cos(pi * (vecB[0, 0] - vecA[0, 0]) / 180)
-    return arccos(a + b) * 6371.0  # pi is imported with numpy
-
-
-import matplotlib
-import matplotlib.pyplot as plt
+    return arccos(a + b) * 6371.0 
 
 
 def clusterClubs(numClust=5):
