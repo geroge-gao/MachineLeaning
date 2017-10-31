@@ -1,6 +1,6 @@
 import numpy as np
 from numpy import *
-
+import matplotlib.pyplot as plt
 '''
 将数据从文件中取出来
 并且将字符类型转化成浮点型
@@ -109,12 +109,13 @@ def biKmeans(dataSet, k, distMeas=distEclud):
                 bestNewCents = centroidMat#簇的矩阵
                 bestClustAss = splitClustAss.copy()#将样本进行深复制
                 lowestSSE = sseSplit + sseNotSplit#更新最小的值
-        bestClustAss[nonzero(bestClustAss[:, 0].A == 1)[0], 0] = len(centList) #求最大的簇
-        bestClustAss[nonzero(bestClustAss[:, 0].A == 0)[0], 0] = bestCentToSplit#
+        bestClustAss[nonzero(bestClustAss[:, 0].A == 1)[0], 0] = len(centList) #划分之后属于该簇的长度
+        bestClustAss[nonzero(bestClustAss[:, 0].A == 0)[0], 0] = bestCentToSplit#更新为最佳质心
         print('the bestCentToSplit is: ', bestCentToSplit)
         print('the len of bestClustAss is: ', len(bestClustAss))
-        centList[bestCentToSplit] = bestNewCents[0, :].tolist()[0]
-        centList.append(bestNewCents[1, :].tolist()[0])
+        #更新质心列表
+        centList[bestCentToSplit] = bestNewCents[0, :].tolist()[0]#更新原质心 list 中的第 i 个质心为使用二分 kMeans 后 bestNewCents 的第一个质心
+        centList.append(bestNewCents[1, :].tolist()[0])#更新第二个质心
         clusterAssment[nonzero(clusterAssment[:, 0].A == bestCentToSplit)[0],:] = bestClustAss
     return mat(centList), clusterAssment
 
@@ -139,7 +140,7 @@ def distSLC(vecA, vecB):  # Spherical Law of Cosines
     a = sin(vecA[0, 1] * pi / 180) * sin(vecB[0, 1] * pi / 180)
     b = cos(vecA[0, 1] * pi / 180) * cos(vecB[0, 1] * pi / 180) * \
         cos(pi * (vecB[0, 0] - vecA[0, 0]) / 180)
-    return arccos(a + b) * 6371.0 
+    return arccos(a + b) * 6371.0
 
 
 def clusterClubs(numClust=5):
@@ -159,8 +160,8 @@ def clusterClubs(numClust=5):
     ax0.imshow(imgP)
     ax1 = fig.add_axes(rect, label='ax1', frameon=False)
     for i in range(numClust):
-        ptsInCurrCluster = datMat[nonzero(clustAssing[:, 0].A == i)[0], :]
-        markerStyle = scatterMarkers[i % len(scatterMarkers)]
+        ptsInCurrCluster = datMat[nonzero(clustAssing[:, 0].A == i)[0], :]#找到第i类的点
+        markerStyle = scatterMarkers[i % len(scatterMarkers)]#
         ax1.scatter(ptsInCurrCluster[:, 0].flatten().A[0], ptsInCurrCluster[:, 1].flatten().A[0], marker=markerStyle,
                     s=90)
     ax1.scatter(myCentroids[:, 0].flatten().A[0], myCentroids[:, 1].flatten().A[0], marker='+', s=300)
