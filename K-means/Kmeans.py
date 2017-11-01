@@ -47,7 +47,9 @@ def randCent(dataSet,k):
 '''
 计算出函数的质心点，将数据集进行分类
 函数参数:
-    dataSet - 
+    dataSet - 原始数据集
+    distMeas - 距离的计算方式，这里是欧氏距离
+    createCent - 产生质心的方法，这里使用的随机法。
 '''
 def kMeans(dataSet,k,distMeas=distEclud,createCent=randCent):
     m=shape(dataSet)[0]
@@ -117,6 +119,7 @@ def biKmeans(dataSet, k, distMeas=distEclud):
         centList[bestCentToSplit] = bestNewCents[0, :].tolist()[0]#更新原质心 list 中的第 i 个质心为使用二分 kMeans 后 bestNewCents 的第一个质心
         centList.append(bestNewCents[1, :].tolist()[0])#更新第二个质心
         clusterAssment[nonzero(clusterAssment[:, 0].A == bestCentToSplit)[0],:] = bestClustAss
+        showDataSet(datMat3, mat(centList))
     return mat(centList), clusterAssment
 
 def showDataSet(dataSet,cluster):
@@ -175,12 +178,13 @@ if __name__=='__main__':
     # print(max(dataMat[:,0]),"\n",max(dataMat[:,1]))
     # print(randCent(dataMat,2))
     # print(distEclud(dataMat[0],dataMat[1]))
-    myCentriods,clusterAssing = kMeans(dataMat,3);
-    myCentriods=mat(myCentriods)
-    showDataSet(dataMat,myCentriods)
+    #myCentriods,clusterAssing = kMeans(dataMat,3);
+    # myCentriods=mat(myCentriods)
+    # showDataSet(dataMat,myCentriods)
     # print(myCentriods)
-    # datMat3 = mat(loadDataSet('testSet2.txt'))
-    # centList,myNewAssments = biKmeans(datMat3,3)
+    datMat3 = mat(loadDataSet('testSet2.txt'))
+    centList,myNewAssments = biKmeans(datMat3,3)
+
     # print(centList)
     #geoResult = geoGrab('1 VA Center','Augusta, ME')
     #clusterClubs()
